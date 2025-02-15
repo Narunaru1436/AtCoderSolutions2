@@ -26,7 +26,6 @@ int main() {
 
     if (TwoLen == maxLen) cout << "Yes" << endl;
     else cout << "No" << endl;
-
     return 0;
 }
 
