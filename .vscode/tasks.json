@@ -10,7 +10,7 @@
             "command": "g++",
             "args": [
                 "-I",
-                "${workspaceFolder}/ac-library/",
+                "${workspaceFolder}/ac-library-master/",
                 "-g",
                 "-O0",
                 "-Wall",
