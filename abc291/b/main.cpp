@@ -2,25 +2,16 @@
 using namespace std;
 
 int main() {
-    int N;
-    cin >> N;
+	int n;
+	double sum=0.0;
+	cin>>n;
 
-    vector<int> X(5 * N);
-    for (auto &x : X) cin >> x;
+	vector<double> a(5*n);
+	for(int i=0;i<5*n;i++)cin>>a[i];
 
-    sort(X.begin(), X.end());
+	sort(a.begin(),a.end());
+	for(int i=n;i<4*n;i++)sum+=a[i];
+	cout<<sum/((double)(3*n))<<endl;
 
-    int i;
-    for (i = 0; i < N; i++) {
-        X.erase(remove(X.begin(), X.end(), X[0]), X.end());
-        X.erase(remove(X.begin(), X.end(), X[X.size() - 1]), X.end());
-    }
-
-    // 重要→配列の要素の合計値
-    double Total = accumulate(X.begin(), X.end(), 0.0);
-    
-    double ans = Total / X.size();
-    cout << ans << endl;
-
-    return 0;
+	return 0;
 }
