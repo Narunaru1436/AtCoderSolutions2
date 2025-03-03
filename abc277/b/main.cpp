@@ -2,35 +2,19 @@
 using namespace std;
 
 int main() {
-    int N;
-    cin >> N;
+    int n;
+    cin >> n;
+    vector<string> s(n);
+    for (int i = 0; i < n; i++) cin >> s[i];
 
-    vector<string> S(N);
-    for (auto& s : S) cin >> s;
-
-    string ans = "Yes";
-    int i;
-    for (i = 0; i < N; i++) {
-        if (S[i][0] != 'H' && S[i][0] != 'D' && S[i][0] != 'C' && S[i][0] != 'S') {
-            ans = "No";
-            break;
-        }
-
-        if (S[i][1] != 'A' && S[i][1] != '1' && S[i][1] != '2' && S[i][1] != '3' && 
-            S[i][1] != '4' && S[i][1] != '5' && S[i][1] != '6' && S[i][1] != '7' &&
-            S[i][1] != '8' && S[i][1] != '9' && S[i][1] != 'T' && S[i][1] != 'J' &&
-            S[i][1] != 'Q' && S[i][1] != 'K') 
-        {
-            ans = "No";
-            break;
-        }
-
-        if (count(S.begin(), S.end(), S[i]) >= 2) {
-            ans = "No";
-        }
-
+    bool ans = true;
+    for (int i = 0; i < n; i++) for (int j = 0; j < i; j++) if (s[i] == s[j]) ans = false;
+    string s1 = "HDCS";
+    string s2 = "A23456789TJQK";
+    for (int i = 0; i < n; i++) {
+        if (!count(s1.begin(), s1.end(), s[i][0]) || !count(s2.begin(), s2.end(), s[i][1])) ans = false;
     }
 
-    cout << ans << endl;
+    cout << (ans ? "Yes" : "No") << '\n';
     return 0;
 }
