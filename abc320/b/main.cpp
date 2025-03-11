@@ -1,38 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool IsPalindrome(string s)
+bool IsPalindrome2(string s)
 {
-    string sL = "";
-    string sR = "";
+    int len = s.length();
+    if (len == 1)
+        return true;
+    else if (len == 0) 
+        return false;
 
-    size_t len = s.length();
-
-    if (len != 1) {
-        sL = s.substr(0, len / 2);
-        sR = s.substr((len + 1) / 2);
-        reverse(sR.begin(), sR.end());
+    int mid = (len + 1) / 2;
+    bool ans = true;
+    int i;
+    for (i = 0; i <= mid; i++) {
+        if (s[i] != s[len - 1 - i]) {
+            ans = false;
+            break;
+        }
     }
 
-    return sL == sR;
+    return ans;
 }
 
-int main() {
+int main()
+{
     string S;
     cin >> S;
 
+    string temp;
+    int ans = 0;
     int i, j;
-    string strCur;
-    int ans = 1;
     for (i = 0; i < S.length(); i++) {
-        for (j = i + 1; j <= S.length(); j++) {
-            strCur = S.substr(i, j);
-            if (IsPalindrome(strCur)) {
-                if (strCur.length() > ans) ans = strCur.length();
+        for (j = i; j < S.length(); j++) {
+            temp = S.substr(i, j - i + 1);
+            if (IsPalindrome2(temp)) {
+                ans = max(ans, (int)temp.length());
             }
         }
     }
 
     cout << ans << endl;
-    return 0;
 }
+
+
