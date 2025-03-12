@@ -2,20 +2,20 @@
 using namespace std;
 
 int main() {
-    long long X, K;
+    long long X;
+    int K;
     cin >> X >> K;
 
-    long long m, pow10 = 1;
-    long long i;
-    for (i = 0; i < K; i++) {
-        X /= pow10;
-        m = X % 10;
-        
-        if (m <= 4) X -= m;
-        else X += m;
+    long long factor = 1;  // 10^i を管理
 
-        X *= pow10;
-        pow10 *= 10;
+    for (int i = 0; i < K; i++) {
+        long long remainder = X % (factor * 10);
+        if (remainder >= 5 * factor) {
+            X += (10 * factor - remainder);  // 切り上げ
+        } else {
+            X -= remainder;  // 切り捨て
+        }
+        factor *= 10;
     }
 
     cout << X << endl;

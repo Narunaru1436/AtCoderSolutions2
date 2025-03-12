@@ -2,71 +2,56 @@
 #include "unordered_set"
 using namespace std;
 
-// vec2がvec1にない要素を1以上持っているかどうか
-bool SubSolution310A(vector<int> vec1, vector<int> vec2)
-{
-    int i;
-    int n;
-    for (i = 0; i < vec1.size(); i++) {
-        n = vec1[i];
-        if (find(vec2.begin(), vec2.end(), n) == vec2.end()) return true;
-    }
-
-    return false;
-}
-
-// vec2がvec1を内包しているかどうか
-bool SubSolution310B(vector<int> vec1, vector<int> vec2)
-{
-    unordered_set<int> elements(vec2.begin(), vec2.end());
-
-    for (int n : vec1) {
-        if (elements.count(n) == 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-// あとで解説読む
-
 int main()
 {
     int N, M;
     cin >> N >> M;
 
-    // 以下の条件を両方満たすi, jがあるならYes
-    // ①Pi > Pj or (Pi == Pj && j番目の商品がi番目の商品にない機能を1つ以上持つ)
-    // ②j番目の商品がi番目の商品が持つ機能を全て持つ
-
     vector<int> P(N);
-    vector<int> C(N);
-    vector<vector<int>> F(N, vector<int>(N));
-
-    int i, j;
+    vector<set<int>> F(N);
+    int C, f;
+    int i, j, k;
     for (i = 0; i < N; i++) {
-        cin >> P[i] >> C[i];
-        F[i].resize(C[i]);
-        for (j = 0; j < C[i]; j++) {
-            cin >> F[i][j];
+        cin >> P[i] >> C;
+        for (j = 0; j < C; j++) {
+            cin >> f;
+            F[i].insert(f);
         }
     }
 
-    string ans = "No";
+    bool all_included = true;
+    bool has_extra_feature = false;
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
             if (i == j)
                 continue;
-            if (P[i] > P[j] || (P[i] == P[j] && SubSolution310A(F[i], F[j]))) {
-                if (SubSolution310B(F[i], F[j])) {
-                    ans = "Yes";
+
+            if (P[i] < P[j])
+                continue;
+
+            all_included = true;
+            for (int fx : F[i]) { // 重要→配列の要素ループ。インデックスが重要じゃないならこっちを使う
+                if (F[j].count(fx) == 0) {
+                    all_included = false;
+                    break;
                 }
+            }
+            if (!all_included)
+                continue;
+
+            for (int fx : F[j]) {
+                if (F[i].count(fx) == 0) { // 重要→setの要素探索
+                    has_extra_feature = true;
+                }
+            }
+
+            if (P[i] > P[j] || has_extra_feature) {
+                cout << "Yes" << endl;
+                return 0;
             }
         }
     }
 
-    cout << ans << endl;
+    cout << "No" << endl;
     return 0;
 }
-

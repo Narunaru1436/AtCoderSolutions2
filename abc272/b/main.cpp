@@ -5,34 +5,30 @@ int main() {
     int N, M;
     cin >> N >> M;
 
-    // 重要→mapの初期化方法
-    map<int, vector<bool>> mp;
-    for (int i = 0; i < N; ++i) {
-        mp[i] = vector<bool>(N, false);
-    }
+    vector<vector<int>> X(N, vector<int>(N));
+    vector<int> A;
 
-    int i, j;
-    int k, x, y;
+    int k;
+    int i, j, l;
     for (i = 0; i < M; i++) {
         cin >> k;
-        for (j = 0; j < k; j++) {
-            if (j == 0) cin >> x;
-            else {
-                cin >> y;
-                mp[x - 1][y - 1] = true;
-                mp[y - 1][x - 1] = true;
+        A.resize(k);
+        for (auto& a : A) cin >> a, a--; // 重要→インデックス考慮の格納
+
+        for (j = 0; j < k - 1; j++) {
+            for (l = j + 1; l < k; l++) {
+                X[A[j]][A[l]] = true;
             }
         }
     }
 
-    string ans = "Yes";
-    for (i = 0; i < N; i++) {
-        if (count(mp[i].begin(), mp[i].end(), false) >= 1) {
-            ans = "No";
-            break;
+    bool ans = true;
+    for (int i = 0; i < N; i++) {
+        for (int j = i + 1; j < N; j++) {
+            ans &= X[i][j];
         }
     }
 
-    cout << ans << endl;
+    cout << (ans ? "Yes" : "No") << endl;
     return 0;
 }
