@@ -7,19 +7,20 @@ int main() {
     int N;
     cin >> N;
 
-    vector<int> A(N);
-    for (auto&& a : A)
-        cin >> a;
+    vector<long long> A(N);
+    int i;
+    for (i = 0; i < N; i++) cin >> A[i];
+    
+    int j = 0;
+    long long ans = 0;
+    for (i = 0; i < N; i++) {
+        while (j < N && A[j] * 2 <= A[i]) {
+            j++;
+        }
 
-    long ans = 0;
-    // a / 2 より大きい最初の要素（なければ最後の次）を表す値 j
-    for (int j = 0; const auto a : A) {
-        // 越えるまで進める
-        while (j < N && A[j] * 2 <= a) j++;
         ans += j;
     }
 
     cout << ans << endl;
-
     return 0;
 }
