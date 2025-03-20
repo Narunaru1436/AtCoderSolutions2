@@ -1,38 +1,43 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 bool InsertCheck386C(string s, string t)
 {
-    if (s.length() + 1 != t.length()) return false;
+    int pc = 0;
+    int sc = 0;
+    int sl = s.size();
+    int tl = t.size();
 
-    for (int i = 0; i < t.length(); i++) {
-        string temp = s.substr(0, i) + t[i] + s.substr(i);
-        if (temp == t) return true;
+    // 先頭からチェック
+    while (pc < sl) {
+        if (s[pc] == t[pc]) { pc++; }
+        else {break;}
     }
-    return false;
-}
-
-bool DeleteCheck386C(string s, string t)
-{
-    if (s.length() - 1 != t.length()) return false;
-
-    for (int i = 0; i < s.length(); i++) {
-        string temp = s.substr(0, i) + s.substr(i + 1);
-        if (temp == t) return true;
+    // 末尾からチェック
+    while (sc < sl) {
+        if (s[sl - sc - 1] == t[tl - sc - 1]) { sc++; }
+        else {break;}
     }
-    return false;
+
+    // 先頭からの一致数 + 末尾からの一致数 >= 挿入前の文字列数
+    if (pc + sc >= sl) 
+        return true;
+    else
+        return false;
 }
 
 bool ReplaceCheck386C(string s, string t)
 {
-    if (s.length() != t.length()) return false;
-
-    int diffCount = 0;
-    for (int i = 0; i < s.length(); i++) {
-        if (s[i] != t[i]) diffCount++;
-        if (diffCount > 1) return false;
+    int cnt = 0;
+    int i;
+    for (i = 0; i < s.size(); i++) {
+        if (s[i] != t[i]) cnt++;
     }
-    return diffCount == 1;
+
+    if (cnt <= 1)
+        return true;
+    else
+        return false;
 }
 
 int main()
@@ -41,7 +46,25 @@ int main()
     string S, T;
     cin >> K >> S >> T;
 
-    bool ans = ReplaceCheck386C(S, T) || DeleteCheck386C(S, T) || InsertCheck386C(S, T);
+    if (S == T) {
+        cout << "Yes" << endl;
+        return 0;
+    }
+
+    int SLen = S.size();
+    int TLen = T.size();
+
+    bool ans = false;
+    if (SLen == TLen) {
+        ans = ReplaceCheck386C(S, T);
+    }
+    else if (SLen + 1 == TLen) {
+        ans = InsertCheck386C(S, T);
+    }
+    else if (SLen - 1 == TLen) {
+        ans = InsertCheck386C(T, S);
+    }
 
     cout << (ans ? "Yes" : "No") << endl;
+    return 0;
 }
